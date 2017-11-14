@@ -36,6 +36,6 @@ status NextElem(SqList L,ElemType cur,ElemType & next_e);
 status ListInsert(SqList & L,int i,ElemType e);
 status ListDelete(SqList & L, int i, ElemType & e);
 status ListTrabverse(SqList L);  //¼ò»¯¹ý
-void LoadFromFile();
-void ExportToFile();
+status LoadFromFile(SqList &L);
+status ExportToFile(SqList L);
 								 /*--------------------------------------------*/
