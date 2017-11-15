@@ -1,12 +1,14 @@
 #include "declaration.h"//声明&定义头文件
 
-bool ListCreated = false;//判断线性表是否存在
+bool ListCreated[MaxLength];//判断线性表是否存在
 FILE *fp;
 char filename[30];
 char vacant;
+int index = 1;
 
 void main(void) {
-	SqList L;  
+	SqList L;
+	SqList List[MaxLength];
 	int op = 1;
 	ElemType elem,cur;
 	int pos=0,result;
@@ -22,8 +24,11 @@ void main(void) {
 		printf("    	  5. ListLength（求表长）            11. ListDelete（删除元素）\n");
 		printf("    	  6. GetElem（获取元素）             12. ListTrabverse（遍历输出线性表）\n");
 		printf("          13. LoadFromFile（读取文件）       14. ExportToFile（输出到文件）\n");
+		printf("          15. Multi-Operation（多表操作）\n");
 		printf("    	  0. Exit\n");
 		printf("--------------------------------------------------------------------------------------\n");
+		printf("您当前所操作的是第%d号线性表\n",index);
+		L = List[index];
 		printf("请选择你的操作[0~12]:");
 		scanf_s("%d", &op);
 		//根据用户输入调用相应函数，执行相应功能
@@ -32,39 +37,42 @@ void main(void) {
 			if (IntiaList(L) == OK)
 			{
 				printf("线性表创建成功！\n");
-				ListCreated = true;
+				List[index] = L;
+				ListCreated[index] = true;
 			}
 			else printf("线性表创建失败！\n");
-			printf("按任意键继续\n");
+			printf("按回车键继续\n");
 			getchar(); getchar();
 			break;
 		case 2:
 			if (DestroyList(&L) == OK)
 			{
 				printf("线性表销毁成功\n");
-				ListCreated = false;
+				List[index] = L;
+				ListCreated[index] = false;
 			}
 			else
 			{
 				printf("线性表销毁失败\n");
 			}
-			printf("按任意键继续\n");
+			printf("按回车键继续\n");
 			getchar(); getchar();
 			break;
 		case 3:
 			if (ClearList(L) == OK)
 			{
 				printf("线性表清空成功\n");
+				List[index] = L;
 			}
 			else
 			{
 				printf("线性表清空失败\n");
 			}
-			printf("按任意键继续\n");
+			printf("按回车键继续\n");
 			getchar(); getchar();
 			break;
 		case 4:
-			if (ListEmpty(L) == TRUE)
+			if (ListEmpty(L) == OK)
 			{
 				printf("线性表已经清空\n");
 			}
@@ -72,7 +80,7 @@ void main(void) {
 			{
 				printf("线性表未清空\n");
 			}
-			printf("按任意键继续\n");
+			printf("按回车键继续\n");
 			getchar(); getchar();
 			break;
 		case 5:
@@ -89,7 +97,7 @@ void main(void) {
 			{
 				printf("线性表为空表\n");
 			}
-			printf("按任意键继续\n");
+			printf("按回车键继续\n");
 			getchar(); getchar();
 			break;
 		case 6:
@@ -103,7 +111,7 @@ void main(void) {
 			{
 				printf("查找失败\n");
 			}
-			printf("按任意键继续\n");
+			printf("按回车键继续\n");
 			getchar(); getchar();
 			break;
 		case 7:
@@ -118,7 +126,7 @@ void main(void) {
 			{
 				printf("查找失败\n");
 			}
-			printf("按任意键继续\n");
+			printf("按回车键继续\n");
 			getchar(); getchar();
 			break;
 		case 8:
@@ -132,7 +140,7 @@ void main(void) {
 			{
 				printf("前驱查找失败\n");
 			}
-			printf("按任意键继续\n");
+			printf("按回车键继续\n");
 			getchar(); getchar();
 			break;
 		case 9:
@@ -146,7 +154,7 @@ void main(void) {
 			{
 				printf("后继查找失败\n");
 			}
-			printf("按任意键继续\n");
+			printf("按回车键继续\n");
 			getchar(); getchar();
 			break;
 		case 10:
@@ -154,12 +162,16 @@ void main(void) {
 			scanf_s("%d", &pos);
 			printf("请输入要插入的元素e：");
 			scanf_s("%d", &elem);
-			if(ListInsert(L, pos, elem)==OK) printf("线性表插入成功\n");
+			if (ListInsert(L, pos, elem) == OK) 
+			{ 
+				printf("线性表插入成功\n"); 
+				List[index] = L;
+			}
 			else
 			{
 				printf("线性表插入失败\n");
 			}
-			printf("按任意键继续\n");
+			printf("按回车键继续\n");
 			getchar(); getchar();
 			break;
 		case 11:
@@ -169,31 +181,33 @@ void main(void) {
 			{
 				printf("线性表删除成功\n");
 				printf("所删除的元素为： %d\n",elem);
+				List[index] = L;
 			}
 			else
 			{
 				printf("线性表删除失败\n");
 			}
-			printf("按任意键继续\n");
+			printf("按回车键继续\n");
 			getchar(); getchar();
 			break;
 		case 12:
 			if (!ListTrabverse(L)) {
 				printf("线性表未创建！\n");
 			}
-			printf("按任意键继续\n");
+			printf("按回车键继续\n");
 			getchar(); getchar();
 			break;
 		case 13:
 			if (LoadFromFile(L) == OK) 
 			{
 				printf("读取线性表成功\n");
+				List[index] = L;
 			}
 			else
 			{
 				printf("读取线性表失败\n");
 			}
-			printf("按任意键继续\n");
+			printf("按回车键继续\n");
 			getchar(); getchar();
 			break;
 		case 14:
@@ -205,7 +219,18 @@ void main(void) {
 			{
 				printf("输出线性表失败\n");
 			}
-			printf("按任意键继续\n");
+			printf("按回车键继续\n");
+			getchar(); getchar();
+			break;
+		case 15:
+			if (Switch_List() == OK)
+			{
+				printf("切换成功，当前是第%d号线性表\n",index);
+			}
+			else
+			{
+				printf("切换失败\n");
+			}
 			getchar(); getchar();
 			break;
 		case 0:
@@ -220,7 +245,7 @@ void main(void) {
 //创建线性表
 status IntiaList(SqList & L) {
 	L.elem = (ElemType *)malloc(LIST_INIT_SIZE * sizeof(ElemType));
-	if (!L.elem) exit(OVERFLOW);//存储分配失败
+	if (!L.elem) return ERROR;//存储分配失败
 	L.length = 0;//空表长度为0
 	L.listsize = LIST_INIT_SIZE;//初始存储容量
 	return OK;
@@ -229,7 +254,7 @@ status IntiaList(SqList & L) {
 //销毁线性表（free空间）
 status DestroyList(SqList * L)
 {
-	if (ListCreated == true) {
+	if (ListCreated[index] == true) {
 		free(L->elem);
 		L->elem = NULL;
 		return OK;
@@ -252,11 +277,11 @@ status ListEmpty(SqList L)
 {
 	if (L.length == 0)
 	{
-		return TRUE;
+		return OK;
 	}
 	else
 	{
-		return FALSE;
+		return ERROR;
 	}
 }
 
@@ -269,7 +294,7 @@ int ListLength(SqList L)
 //获得第i个位置上的元素值
 status GetElem(SqList L, int i, ElemType & e)
 {
-	if (i <= L.length)//判断第i个元素是否存在
+	if (i <= L.length && i>0)//判断第i个元素是否存在
 	{
 		e = *(L.elem + i - 1);//第1个位置对应elem，第i个即从elem向后移动i-1个位置
 		return OK;
@@ -300,7 +325,7 @@ int LocateElem(SqList L, ElemType e)//简化过
 //找到某元素的前驱元素
 status PriorElem(SqList L, ElemType cur, ElemType & pre_e)
 {
-	for (int j = 1; j <= L.length; j++)//遍历线性表
+	for (int j = 1; j <= L.length-1; j++)//遍历线性表
 	{
 		if (L.elem[j] == cur)//找到目标元素
 		{
@@ -314,7 +339,7 @@ status PriorElem(SqList L, ElemType cur, ElemType & pre_e)
 //找到某元素的后继元素 原理同PriorElem
 status NextElem(SqList L, ElemType cur, ElemType & next_e)
 {
-	for (int j = 1; j <= L.length; j++)
+	for (int j = 0; j < L.length-1; j++)
 	{
 		if (L.elem[j] == cur)
 		{
@@ -328,13 +353,13 @@ status NextElem(SqList L, ElemType cur, ElemType & next_e)
 //插入元素
 status ListInsert(SqList & L, int i, ElemType e)
 {
-	if (ListCreated == true) {
+	if (ListCreated[index] == true) {
 		//在顺序线性表L中第i个位置之前插入新的元素e，i的合法值为1~ListLength+1
 		if (i<1 || i>L.length + 1) return ERROR; //i值不合法
 		if (L.length >= L.listsize)
 		{
 			ElemType* newbase = (ElemType*)realloc(L.elem, (L.listsize + LISTINCREMENT) * sizeof(ElemType));
-			if (!newbase)exit(OVERFLOW);//存储分配失败
+			if (!newbase) return ERROR;//存储分配失败
 			L.elem = newbase;//新基址
 			L.listsize += LISTINCREMENT;//增加存储容量
 		}
@@ -372,7 +397,7 @@ status ListDelete(SqList & L, int i, ElemType & e)
 
 //遍历输出线性表
 status ListTrabverse(SqList L) {
-	if (ListCreated == true) {
+	if (ListCreated[index] == true) {
 		int i;
 		printf("\n-----------all elements -----------------------\n");
 		for (i = 0; i < L.length; i++) printf("%d ", L.elem[i]);
@@ -389,7 +414,7 @@ status ListTrabverse(SqList L) {
 status LoadFromFile(SqList &L)
 {
 	L.length = 0;
-	if (ListCreated == true)
+	if (ListCreated[index] == true)
 	{
 		printf("请输入文件名: ");
 		scanf_s("%s", filename,30);
@@ -415,7 +440,7 @@ status LoadFromFile(SqList &L)
 //将线性表的内容写入文件中保存
 status ExportToFile(SqList L)
 {
-	if (ListCreated == true)
+	if (ListCreated[index] == true)
 	{
 		printf("请输入文件名: ");
 		scanf_s("%s", filename,30);
@@ -438,5 +463,22 @@ status ExportToFile(SqList L)
 	else
 	{
 		return ERROR;
+	}
+}
+
+//多表操作函数，切换线性表
+status Switch_List()
+{
+	int num;
+	printf("您想要切换到第几个线性表？");
+	scanf_s("%d", &num);
+	if (num > 99||num < 1)
+	{
+		return ERROR;
+	}
+	else
+	{
+		index = num;
+		return OK;
 	}
 }

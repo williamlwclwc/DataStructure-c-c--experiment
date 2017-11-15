@@ -11,6 +11,7 @@
 #define ERROR 0
 #define INFEASTABLE -1
 #define OVERFLOW -2
+#define MaxLength 100
 
 typedef int status;
 typedef int ElemType; //数据元素类型定义
@@ -38,4 +39,5 @@ status ListDelete(SqList & L, int i, ElemType & e);
 status ListTrabverse(SqList L);  //简化过
 status LoadFromFile(SqList &L);
 status ExportToFile(SqList L);
+int Switch_List();
 								 /*--------------------------------------------*/
