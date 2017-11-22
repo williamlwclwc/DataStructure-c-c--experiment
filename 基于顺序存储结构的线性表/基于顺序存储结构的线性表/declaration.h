@@ -6,11 +6,11 @@
 
 /*---------page 10 on textbook ---------*/
 #define TRUE 1
-#define FALSE 0
+#define FALSE -1
 #define OK 1
-#define ERROR 0
-#define INFEASTABLE -1
-#define OVERFLOW -2
+#define ERROR -2
+//#define INFEASTABLE -1
+//#define OVERFLOW -2
 #define MaxLength 100
 
 typedef int status;
@@ -20,7 +20,7 @@ typedef int ElemType; //数据元素类型定义
 #define LIST_INIT_SIZE 100
 #define LISTINCREMENT  10
 typedef struct {  //顺序表（顺序结构）的定义
-	ElemType * elem;
+	ElemType * elem=NULL;
 	int length;
 	int listsize;
 }SqList;
@@ -37,7 +37,7 @@ status NextElem(SqList L,ElemType cur,ElemType & next_e);
 status ListInsert(SqList & L,int i,ElemType e);
 status ListDelete(SqList & L, int i, ElemType & e);
 status ListTrabverse(SqList L);  //简化过
-status LoadFromFile(SqList &L);
-status ExportToFile(SqList L);
+status LoadFromFile(FILE*fp,SqList &L);
+status ExportToFile(FILE*fp,SqList L);
 int Switch_List();
 								 /*--------------------------------------------*/
