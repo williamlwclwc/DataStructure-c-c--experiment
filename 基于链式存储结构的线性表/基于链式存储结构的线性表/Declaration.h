@@ -19,12 +19,22 @@ typedef int ElemType; //数据元素类型定义
 
 #define LIST_INIT_SIZE 100
 #define LISTINCREMENT  10
-typedef struct LNode{  //顺序表（链式结构）的定义
+typedef struct LNode
+{  
+	//顺序表（链式结构）的定义
 	ElemType data;
 	struct LNode *next;
 }LNode,*LinkList;
 
-/*-----page 19 on textbook ---------*/
+typedef struct Mul_List
+{
+	//表头链表实现多表
+	int num;//多表序号
+	LinkList L;
+	struct Mul_List *next;
+}Mul_List,*Mul;
+
+/*-----on textbook ---------*/
 status IntiaList(LinkList & L);
 status DestroyList(LinkList &L);
 status ClearList(LinkList &L);

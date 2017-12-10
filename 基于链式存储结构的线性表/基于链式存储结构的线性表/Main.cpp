@@ -2,13 +2,23 @@
 
 FILE *fp;
 char filename[30];
-int List_index = 1;
-LinkList L = NULL;
+int List_index = 1;//当前多表序号
+
+Mul Mul_L = NULL;
+Mul Start = NULL;//记录多表的头结点位置
+
+int List_size = 1;//多表数量
 
 void main(void) {
 	int op = 1;
 	ElemType elem, cur_e;
 	int pos = 0, result;
+	//多表初始化
+	Mul_L = (Mul)malloc(sizeof(Mul_List));//创建多表表头链表的头结点
+	Mul_L->L = NULL;//初始化
+	Mul_L->num = 1;//当前表的序号
+	Mul_L->next = NULL;
+	Start = Mul_L;
 	//Main Menu Entrance
 	while (op) {
 		system("cls");	printf("\n\n");
@@ -24,14 +34,13 @@ void main(void) {
 		printf("          15. Multi-Operation（多表操作）\n");
 		printf("    	  0. Exit\n");
 		printf("--------------------------------------------------------------------------------------\n");
-		printf("您当前所操作的是第%d号线性表\n", List_index);
-	
+		printf("您当前所操作的是第%d号线性表\n", List_index);	
 		printf("请选择你的操作[0~15]:");
 		scanf_s("%d", &op);
 		//根据用户输入调用相应函数，执行相应功能
 		switch (op) {
 		case 1:
-			if (IntiaList(L) == OK)
+			if (IntiaList(Mul_L->L) == OK)
 			{
 				printf("线性表创建成功！\n");
 			}
@@ -40,7 +49,7 @@ void main(void) {
 			getchar(); getchar();
 			break;
 		case 2:
-			if (DestroyList(L) == OK)
+			if (DestroyList(Mul_L->L) == OK)
 			{
 				printf("线性表销毁成功\n");
 			}
@@ -52,7 +61,7 @@ void main(void) {
 			getchar(); getchar();
 			break;
 		case 3:
-			if (ClearList(L) == OK)
+			if (ClearList(Mul_L->L) == OK)
 			{
 				printf("线性表清空成功\n");
 			}
@@ -64,15 +73,15 @@ void main(void) {
 			getchar(); getchar();
 			break;
 		case 4:
-			if (ListEmpty(L) == TRUE)
+			if (ListEmpty(Mul_L->L) == TRUE)
 			{
 				printf("线性表已经清空\n");
 			}
-			else if (ListEmpty(L) == FALSE)
+			else if (ListEmpty(Mul_L->L) == FALSE)
 			{
 				printf("线性表未清空\n");
 			}
-			else if (ListEmpty(L) == ERROR)
+			else if (ListEmpty(Mul_L->L) == ERROR)
 			{
 				printf("线性表未创建\n");
 			}
@@ -80,7 +89,7 @@ void main(void) {
 			getchar(); getchar();
 			break;
 		case 5:
-			result = ListLength(L);
+			result = ListLength(Mul_L->L);
 			if (result == -2)
 			{
 				printf("测量长度失败\n");
@@ -99,7 +108,7 @@ void main(void) {
 		case 6:
 			printf("请输入要查询的元素的序号：");
 			scanf_s("%d", &pos);
-			if (GetElem(L, pos, elem) == OK)
+			if (GetElem(Mul_L->L, pos, elem) == OK)
 			{
 				printf("您所查询的元素（第%d个）是：%d\n", pos, elem);
 			}
@@ -113,7 +122,7 @@ void main(void) {
 		case 7:
 			printf("请输入你想要查找的元素：");
 			scanf_s("%d", &elem);
-			result = LocateElem(L, elem);
+			result = LocateElem(Mul_L->L, elem);
 			if (result != 0 && result != ERROR)
 			{
 				printf("该元素的位置是：%d\n", result);
@@ -128,7 +137,7 @@ void main(void) {
 		case 8:
 			printf("请输入要查询的元素：");
 			scanf_s("%d", &cur_e);
-			if (PriorElem(L, cur_e, elem) == OK)
+			if (PriorElem(Mul_L->L, cur_e, elem) == OK)
 			{
 				printf("该元素的前驱为：%d\n", elem);
 			}
@@ -142,7 +151,7 @@ void main(void) {
 		case 9:
 			printf("请输入要查询的元素：");
 			scanf_s("%d", &cur_e);
-			if (NextElem(L, cur_e, elem) == OK)
+			if (NextElem(Mul_L->L, cur_e, elem) == OK)
 			{
 				printf("该元素的后继为：%d\n", elem);
 			}
@@ -158,7 +167,7 @@ void main(void) {
 			scanf_s("%d", &pos);
 			printf("请输入要插入的元素e：");
 			scanf_s("%d", &elem);
-			if (ListInsert(L, pos, elem) == OK)
+			if (ListInsert(Mul_L->L, pos, elem) == OK)
 			{
 				printf("插入成功\n");
 			}
@@ -172,7 +181,7 @@ void main(void) {
 		case 11:
 			printf("请输入要删除元素的位置i：");
 			scanf_s("%d", &pos);
-			if (ListDelete(L, pos, elem) == OK)
+			if (ListDelete(Mul_L->L, pos, elem) == OK)
 			{
 				printf("删除成功\n");
 				printf("所删除的元素为： %d\n", elem);
@@ -185,7 +194,7 @@ void main(void) {
 			getchar(); getchar();
 			break;
 		case 12:
-			if (ListTrabverse(L) != OK) {
+			if (ListTrabverse(Mul_L->L) != OK) {
 				printf("线性表未创建！\n");
 			}
 			printf("按回车键继续\n");
@@ -198,7 +207,7 @@ void main(void) {
 			{
 				printf("文件打开失败\n ");
 			}
-			else if (LoadFromFile(fp, L) == OK)
+			else if (LoadFromFile(fp, Mul_L->L) == OK)
 			{
 				printf("读取线性表成功\n");
 			}
@@ -216,7 +225,7 @@ void main(void) {
 			{
 				printf("打开文件失败\n");
 			}
-			else if (ExportToFile(fp, L) == OK)
+			else if (ExportToFile(fp, Mul_L->L) == OK)
 			{
 				printf("输出线性表成功\n");
 			}
@@ -284,6 +293,7 @@ status DestroyList(LinkList &L)
 		DestroyList(L->next);
 		L->next = NULL;
 		free(L);
+		L = NULL;
 	}
 	return OK;
 }
@@ -488,6 +498,11 @@ status ListInsert(LinkList & L, int i, ElemType e)
 status ListDelete(LinkList & L, int i, ElemType & e)
 {
 	if (!L) return ERROR;
+	//判断删除位置是否合法
+	if (i<1 || i>L->data )
+	{
+		return ERROR;
+	}
 	L->data--;//表长-1
 	//寻找删除点
 	LinkList p = L;
@@ -591,6 +606,52 @@ status ExportToFile(FILE*fp, LinkList L)
 //多表操作函数，切换线性表
 status Switch_List()
 {
-
-	return OK;
+	int c_i;
+	printf("您要切换到表几？\n");
+	scanf_s("%d", &c_i);//输入切换的序号
+	getchar();
+	if (c_i > List_size + 1)
+	{
+		printf("只可以连续创建多表，不能跳过第%d号表\n", List_size+1);
+		return ERROR;
+	}
+	Mul p = Start;
+	//遍历多表
+	while (p->next != NULL)
+	{
+		//找到相符的多表
+		if (p->num == c_i)
+		{
+			//将当前操作的L改为多表表头指向的L
+			Mul_L = p;
+			List_index = p->num;
+			return OK;
+		}
+		else
+		{
+			//未找到则指向下一个位置
+			p = p->next;
+		}
+	}
+	//遍历完仍未找到符合的多表
+	printf("您所切换的多表没有创建过，是否创建？(Y/N)");
+	char choice;
+	scanf_s("%c", &choice);
+	if (choice == 'Y')
+	{
+		List_size++;
+		//创建新的多表表头结点
+		Mul New_mul = (Mul)malloc(sizeof(Mul_List));//申请新的多表头结点
+		New_mul->L = NULL;//初始化
+		New_mul->num = p->num+1;//多表序号
+		p->next = New_mul;//接在多表头结点链表后面
+		Mul_L = Mul_L->next;//移动多表指针
+		List_index = New_mul->num;//修改序号
+		return OK;
+	}
+	else if (choice == 'N')
+	{
+		return ERROR;
+	}
+	return ERROR;
 }
