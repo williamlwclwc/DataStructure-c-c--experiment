@@ -1,0 +1,15 @@
+﻿  Main.cpp
+Main.cpp(171): warning C4477: “scanf_s”: 格式字符串“%c”需要类型“char *”的参数，但可变参数 1 拥有了类型“int *”
+  Main.cpp(171): note: 此参数由转换说明符使用
+Main.cpp(171): warning C4473: “scanf_s”: 没有为格式字符串传递足够的参数
+  Main.cpp(171): note: 占位符和其参数预计 2 可变参数，但提供的却是 1 参数
+  Main.cpp(171): note: 缺失的可变参数 2 为格式字符串“%c”所需
+  Main.cpp(171): note: 此参数用作缓冲区大小
+Main.cpp(610): warning C4018: “<=”: 有符号/无符号不匹配
+Main.cpp(1176): warning C4101: “temp”: 未引用的局部变量
+  正在生成代码
+  2 of 40 functions ( 5.0%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
+  已完成代码的生成
+  基于二叉链表的二叉树.vcxproj -> C:\william liu\学习\Data Structure exp\基于二叉链表的二叉树\Release\基于二叉链表的二叉树.exe

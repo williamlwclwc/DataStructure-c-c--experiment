@@ -1,0 +1,13 @@
+﻿  Main.cpp
+c:\william liu\学习\data structure exp\基于二叉链表的二叉树\基于二叉链表的二叉树\main.cpp(171): warning C4477: “scanf_s”: 格式字符串“%c”需要类型“char *”的参数，但可变参数 1 拥有了类型“int *”
+  c:\william liu\学习\data structure exp\基于二叉链表的二叉树\基于二叉链表的二叉树\main.cpp(171): note: 此参数由转换说明符使用
+c:\william liu\学习\data structure exp\基于二叉链表的二叉树\基于二叉链表的二叉树\main.cpp(171): warning C4473: “scanf_s”: 没有为格式字符串传递足够的参数
+  c:\william liu\学习\data structure exp\基于二叉链表的二叉树\基于二叉链表的二叉树\main.cpp(171): note: 占位符和其参数预计 2 可变参数，但提供的却是 1 参数
+  c:\william liu\学习\data structure exp\基于二叉链表的二叉树\基于二叉链表的二叉树\main.cpp(171): note: 缺失的可变参数 2 为格式字符串“%c”所需
+  c:\william liu\学习\data structure exp\基于二叉链表的二叉树\基于二叉链表的二叉树\main.cpp(171): note: 此参数用作缓冲区大小
+c:\william liu\学习\data structure exp\基于二叉链表的二叉树\基于二叉链表的二叉树\main.cpp(610): warning C4018: “<=”: 有符号/无符号不匹配
+c:\william liu\学习\data structure exp\基于二叉链表的二叉树\基于二叉链表的二叉树\main.cpp(1162): warning C4101: “temp”: 未引用的局部变量
+c:\william liu\学习\data structure exp\基于二叉链表的二叉树\基于二叉链表的二叉树\main.cpp(795): warning C4715: “search_tree”: 不是所有的控件路径都返回值
+c:\william liu\学习\data structure exp\基于二叉链表的二叉树\基于二叉链表的二叉树\main.cpp(1057): warning C4715: “InsertChild”: 不是所有的控件路径都返回值
+  基于二叉链表的二叉树.vcxproj -> C:\william liu\学习\Data Structure exp\基于二叉链表的二叉树\Debug\基于二叉链表的二叉树.exe
+  基于二叉链表的二叉树.vcxproj -> C:\william liu\学习\Data Structure exp\基于二叉链表的二叉树\Debug\基于二叉链表的二叉树.pdb (Partial PDB)
