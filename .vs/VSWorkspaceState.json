@@ -1,6 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\基于链式存储结构的线性表",
+    "\\基于顺序存储结构的线性表"
   ],
+  "SelectedNode": "\\基于顺序存储结构的线性表\\基于顺序存储结构的线性表.sln",
   "PreviewInSolutionExplorer": false
 }

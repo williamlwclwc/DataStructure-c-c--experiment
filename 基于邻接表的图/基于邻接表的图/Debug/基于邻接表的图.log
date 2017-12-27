@@ -1,0 +1,5 @@
+﻿  Main.cpp
+c:\william liu\学习\data structure exp\基于邻接表的图\基于邻接表的图\main.cpp(580): warning C4101: “pre”: 未引用的局部变量
+c:\william liu\学习\data structure exp\基于邻接表的图\基于邻接表的图\main.cpp(580): warning C4101: “temp”: 未引用的局部变量
+  基于邻接表的图.vcxproj -> C:\william liu\学习\Data Structure exp\基于邻接表的图\Debug\基于邻接表的图.exe
+  基于邻接表的图.vcxproj -> C:\william liu\学习\Data Structure exp\基于邻接表的图\Debug\基于邻接表的图.pdb (Partial PDB)
