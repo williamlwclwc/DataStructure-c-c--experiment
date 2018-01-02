@@ -15,11 +15,6 @@
 typedef int status;
 typedef int ElemType; //数据元素类型定义
 
-/*typedef enum 
-{
-	DG,UG,DW,UW//图的种类：依次未有向图，无向图，有向网，无向网
-}GraphKind;*/
-
 //点集定义（图的顶点）
 typedef struct Nodes
 {
@@ -39,7 +34,6 @@ typedef struct GNode
 	N vertices;//图的顶点数组
 	int ver_num;//图的顶点数量
 	int ed_num;//图的边数量
-	//int kind;//图的种类
 }Graph;
 
 //队列定义

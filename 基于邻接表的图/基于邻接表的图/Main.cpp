@@ -3,7 +3,8 @@
 FILE *fp1,*fp2;
 char filename1[30],filename2[30];
 Graph G[MaxLength];
-int Graph_index = 1;
+int Graph_index = 1;//多图的下标
+int nv;//未遍历的顶点序号，-1表示全部遍历过
 
 void main(void) {
 	int op = 1;
@@ -18,15 +19,15 @@ void main(void) {
 		printf("    	  1. CreateGraph（创建图）           7. NextAdjVex（获取下一个邻接点）\n");
 		printf("    	  2. DestroyGraph（销毁图）          8. InsertVex（插入顶点）\n");
 		printf("    	  3. LocateVex（查找顶点）           9. DeleteVex（删除顶点） \n");
-		printf("    	  4. GetVex（获取顶点）              10. InsertArc（插入弧）\n");
-		printf("    	  5. PutVex（顶点赋值）              11. DeleteArc（删除弧）\n");
-		printf("    	  6. FirstAdjVex（获取第一邻接点）   12. DFSTraverse（深度优先搜索遍历）\n");
-		printf("          13. BFSTraverse（广度优先搜索遍历）14.Multi-Graph（多图操作）\n");
-		printf("          15. LoadFromFile（读取文件）       16. ExportToFile（输出到文件）\n");
+		printf("    	  4. GetVex（获取顶点）              10.InsertArc（插入弧）\n");
+		printf("    	  5. PutVex（顶点赋值）              11.DeleteArc（删除弧）\n");
+		printf("    	  6. FirstAdjVex（获取第一邻接点）   12.DFSTraverse（深度优先搜索遍历）\n");
+		printf("          13.BFSTraverse（广度优先搜索遍历） 14.LoadFromFile（读取文件）\n");
+		printf("          15.ExportToFile（输出到文件）      16.Multi-Graph（多图操作）\n");
 		printf("    	  0. Exit\n");
 		printf("--------------------------------------------------------------------------------------\n");
 		printf("您当前所操作的是第%d号图\n", Graph_index);
-		printf("请选择你的操作[0~15]:");
+		printf("请选择你的操作[0~16]:");
 		scanf_s("%d", &op);
 		//根据用户输入调用相应函数，执行相应功能
 		switch (op) {
@@ -58,7 +59,7 @@ void main(void) {
 			printf("请输入要查找的结点信息：");
 			scanf_s("%d", &u);
 			result = LocateVex(G[Graph_index], u);
-			if (result == OK)
+			if (result != ERROR)
 			{
 				printf("您要查找的结点序号为:%d\n",result);
 			}
@@ -79,7 +80,7 @@ void main(void) {
 			}
 			else
 			{
-				printf("查找失败\n");
+				printf("获取失败\n");
 			}
 			printf("按回车键继续\n");
 			getchar(); getchar();
@@ -106,7 +107,7 @@ void main(void) {
 			re = FirstAdjVex(G[Graph_index], u);
 			if (re != NULL)
 			{
-				printf("第一个邻接点是：%d", re->data);
+				printf("第一个邻接点是：%d\n", re->data);
 			}
 			else
 			{
@@ -123,7 +124,7 @@ void main(void) {
 			re = NextAdjVex(G[Graph_index], u, value);
 			if (re != NULL)
 			{
-				printf("输入的结点的输入的邻接点的下一个邻接点是：%d", re->data);
+				printf("输入的结点的输入的邻接点的下一个邻接点是：%d\n", re->data);
 			}
 			else
 			{
@@ -195,11 +196,11 @@ void main(void) {
 		case 12:
 			if (DFSTraverse(G[Graph_index]) == OK)
 			{
-				printf("深度优先搜索成功\n");
+				printf("深度优先遍历成功\n");
 			}
 			else
 			{
-				printf("深度优先搜索失败\n");
+				printf("深度优先遍历失败\n");
 			}
 			printf("按回车键继续\n");
 			getchar(); getchar();
@@ -207,11 +208,11 @@ void main(void) {
 		case 13:
 			if (BFSTraverse(G[Graph_index]) == OK)
 			{
-				printf("广度优先搜索成功\n");
+				printf("广度优先遍历成功\n");
 			}
 			else
 			{
-				printf("广度优先搜索失败\n");
+				printf("广度优先遍历失败\n");
 			}
 			printf("按回车键继续\n");
 			getchar(); getchar();
@@ -244,7 +245,12 @@ void main(void) {
 			scanf_s("%s", filename1, 30);
 			printf("请输入弧文件的文件名：");
 			scanf_s("%s", filename2, 30);
-			if (fopen_s(&fp1, filename1, "w+") != 0 || fopen_s(&fp2, filename2, "w+") != 0)
+			if (G[Graph_index].ver_num == 0)
+			{
+				printf("图不存在\n");
+				printf("输出图信息到文件失败\n");
+			}
+			else if (fopen_s(&fp1, filename1, "w+") != 0 || fopen_s(&fp2, filename2, "w+") != 0)
 			{
 				printf("文件打开失败\n ");
 			}
@@ -291,45 +297,21 @@ void main(void) {
 status CreateGraph(Graph &G)
 {
 	int i, j, k;
-	//int w;//权值
 	ElemType va, vb;
 	Edges *p;
-	/*printf("请输入图的类型：0：有向图  1：无向图  2：有向网  3：无向网\n");
-	scanf_s("%d", &G.kind,1);
-	if (G.kind != 0 || G.kind != 1 || G.kind != 2 || G.kind != 3)
-	{
-		return ERROR;
-	}*/
 	printf("请输入顶点的数量：");
 	scanf_s("%d", &G.ver_num);
 	printf("请输入边的数量：");
 	scanf_s("%d", &G.ed_num);
 	for (k = 0; k < G.ver_num; k++)
 	{
+		printf("请输入结点的data值：");
 		scanf_s("%d", &G.vertices[k].data);
 		G.vertices[k].first_adj = NULL;
 	}
 	for (k = 0; k < G.ed_num; k++)
 	{
 		p = (Edges*)malloc(sizeof(Edges));
-		/*if (G.kind == 2 || G.kind == 3)//网（带权）
-		{
-			printf("请输入第%d条边的权值：",k+1);
-			scanf_s("%d", &w, 1);
-			printf("请输入第%d条边的弧尾结点：",k+1);
-			scanf_s("%d", &va, 1);
-			printf("请输入第%d条边的弧头结点：",k+1);
-			scanf_s("%d", &vb, 1);
-			p->weight = w;
-		}
-		else//图（无权）
-		{
-			printf("请输入第%d条边的弧尾结点：", k + 1);
-			scanf_s("%d", &va, 1);
-			printf("请输入第%d条边的弧头结点：", k + 1);
-			scanf_s("%d", &vb, 1);
-			p->weight = 1;
-		}*/
 		printf("请输入第%d条边的弧尾结点：", k + 1);
 		scanf_s("%d", &va);
 		printf("请输入第%d条边的弧头结点：", k + 1);
@@ -339,23 +321,6 @@ status CreateGraph(Graph &G)
 		p->ajvex = j;//边的指针指向弧头结点
 		p->next = G.vertices[i].first_adj;//插入在上一个结点的前面（表头结点后）
 		G.vertices[i].first_adj = p;//表头结点指向新插入的结点
-		/*//无向则还需要一个结点
-		if (G.kind == 1)//无向图
-		{
-			p = (Edges*)malloc(sizeof(Edges));
-			p->weight = 1;
-			p->ajvex = i;//弧头弧尾互换
-			p->next = G.vertices[j].first_adj;//插入在上一个结点的前面（表头结点后）
-			G.vertices[j].first_adj = p;//表头结点指向新插入的结点
-		}
-		else if (G.kind == 3)//无向网
-		{
-			p = (Edges*)malloc(sizeof(Edges));
-			p->weight = w;
-			p->ajvex = i;//弧头弧尾互换
-			p->next = G.vertices[j].first_adj;//插入在上一个结点的前面（表头结点后）
-			G.vertices[j].first_adj = p;//表头结点指向新插入的结点
-		}*/
 	}
 	return OK;
 }
@@ -380,10 +345,6 @@ status DestroyGraph(Graph &G)
 		while (p != NULL)
 		{
 			q = p->next;//令q为p的下一个邻接点（或空）
-			/*if (G.kind >= 2)//网则清空权
-			{
-				p->weight = 0;
-			}*/
 			free(p);
 			p = q;//循环下一个邻接点
 		}
@@ -531,6 +492,10 @@ Vertice* NextAdjVex(Graph G, ElemType v,ElemType w)
 			{
 				return NULL;
 			}
+		}
+		else
+		{
+			p = p->next;
 		}
 	}
 	if (flag == 1)
@@ -700,6 +665,19 @@ void Visit(Vertice v)
 	printf("结点的值为：%d\n", v.data);
 }
 
+//判断非连通图还有哪个顶点没有遍历
+int not_visited(bool *visited)
+{
+	for (int i = 0; i < G[Graph_index].ver_num; i++)
+	{
+		if (visited[i] != true)
+		{
+			return i;//返回没有遍历的顶点序号
+		}
+	}
+	return -1;//全部遍历过了返回-1
+}
+
 /**
 * 函数名称：DFSTraverse
 * 函数参数：图G
@@ -714,7 +692,15 @@ status DFSTraverse(Graph G)
 		return ERROR;
 	}
 	bool visited[MaxLength] = { false };
-	DFS_re(G, G.vertices, visited);
+	int count = 1;
+	nv = not_visited(visited);
+	while (nv != -1)
+	{
+		printf("第%d个连通分量的遍历为：\n",count);
+		count++;
+		DFS_re(G, G.vertices+nv, visited);
+		nv = not_visited(visited);//更新nv的值
+	}
 	return OK;
 }
 //DFS递归算法
@@ -722,14 +708,21 @@ void DFS_re(Graph G,Vertice *v,bool *visited)
 {
 	Visit(*v);
 	visited[LocateVex(G,v->data)] = true;//标记v结点已访问
-	Vertice *w = G.vertices + v->first_adj->ajvex;//w为第一个邻接点
-	while (w != NULL)
+	if (v->first_adj != NULL)
 	{
-		if (visited[v->first_adj->ajvex] == false)//邻接点没有访问，则递归访问
+		Vertice *w = G.vertices + v->first_adj->ajvex;//w为第一个邻接点
+		while (w != NULL)
 		{
-			DFS_re(G,w,visited);
+			if (visited[LocateVex(G,w->data)] == false)//邻接点没有访问，则递归访问
+			{
+				DFS_re(G, w, visited);
+			}
+			if (w->data==G.vertices[0].data)//退回第一个点，即递归退出条件
+			{
+				return;
+			}
+			w = NextAdjVex(G, v->data, w->data);//否则寻找下一个邻接点访问
 		}
-		w = NextAdjVex(G, v->data, w->data);//否则寻找下一个邻接点访问
 	}
 }
 
@@ -750,24 +743,34 @@ status BFSTraverse(Graph G)
 	//初始化队列q
 	seq q;
 	q.front = q.rear = 0;
+	int pos;
 	bool visited[MaxLength] = { false };//判断结点是否已经遍历过
-	Visit(G.vertices[0]);
-	visited[0] = true;
-	enter(&q, G.vertices);//第一个顶点入队
-	while (qEmpty(q) != TRUE)//若队列q非空
+	int count = 1;
+	nv = not_visited(visited);
+	while (nv != -1)
 	{
-		v = del(&q);
-		w = FirstAdjVex(G, v->data);
-		while (w != NULL)
+		printf("第%d个连通分量遍历为：\n",count);
+		count++;
+		Visit(G.vertices[nv]);
+		visited[nv] = true;
+		enter(&q, G.vertices+nv);//第一个顶点入队
+		while (qEmpty(q) != TRUE)//若队列q非空
 		{
-			if (visited[LocateVex(G, w->data)] == false)
+			v = del(&q);
+			w = FirstAdjVex(G, v->data);
+			while (w != NULL)
 			{
-				Visit(G.vertices[LocateVex(G,w->data)]);//访问结点w
-				visited[LocateVex(G, w->data)] = true;
-				enter(&q, w);
+				pos = LocateVex(G, w->data);
+				if (visited[pos] == false)
+				{
+					Visit(G.vertices[pos]);//访问结点w
+					visited[pos] = true;
+					enter(&q, G.vertices + pos);
+				}
 				w = NextAdjVex(G, v->data, w->data);//w后移一个邻接点
 			}
 		}
+		nv = not_visited(visited);
 	}
 	return OK;
 }
@@ -875,13 +878,6 @@ status LoadFromFile(Graph &G)
 **/
 status ExportToFile(Graph G)
 {
-	if (G.ver_num == 0)
-	{
-		fclose(fp1);
-		fclose(fp2);
-		printf("图不存在\n");
-		return ERROR;
-	}
 	Edges *temp;
 	fprintf(fp1, "%d ", G.ver_num);
 	fprintf(fp2, "%d ", G.ed_num);
