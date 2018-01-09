@@ -5,6 +5,7 @@ char filename1[30],filename2[30];
 Graph G[MaxLength];
 int Graph_index = 1;//多图的下标
 int nv;//未遍历的顶点序号，-1表示全部遍历过
+Vertice *entrance;
 
 void main(void) {
 	int op = 1;
@@ -28,6 +29,7 @@ void main(void) {
 		printf("--------------------------------------------------------------------------------------\n");
 		printf("您当前所操作的是第%d号图\n", Graph_index);
 		printf("请选择你的操作[0~16]:");
+		op = 99;
 		scanf_s("%d", &op);
 		//根据用户输入调用相应函数，执行相应功能
 		switch (op) {
@@ -283,6 +285,10 @@ void main(void) {
 		case 0:
 			printf("欢迎下次再使用本系统！\n");
 			getchar(); getchar();
+			break;
+		default:
+			printf("输入指令错误\n");
+			getchar(); getchar(); getchar();
 			break;
 		}//end of switch
 	}//end of while
@@ -542,7 +548,7 @@ status DeleteVex(Graph &G, ElemType v)
 		printf("图不存在\n");
 		return ERROR;
 	}
-	Edges *cur, *next, *temp, *pre;
+	Edges *cur, *next;
 	int flag = 0;
 	for (int i = 0; i < G.ver_num; i++)
 	{
@@ -698,6 +704,7 @@ status DFSTraverse(Graph G)
 	{
 		printf("第%d个连通分量的遍历为：\n",count);
 		count++;
+		entrance = G.vertices + nv;
 		DFS_re(G, G.vertices+nv, visited);
 		nv = not_visited(visited);//更新nv的值
 	}
@@ -717,7 +724,7 @@ void DFS_re(Graph G,Vertice *v,bool *visited)
 			{
 				DFS_re(G, w, visited);
 			}
-			if (w->data==G.vertices[0].data)//退回第一个点，即递归退出条件
+			if (w->data==entrance->data)//退回第一个点，即递归退出条件
 			{
 				return;
 			}
